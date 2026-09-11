@@ -1,0 +1,153 @@
+version: 2.1
+
+# ============================================================================
+# grass.ai CI/CD - CircleCI
+# Builds+test+examples for alinux (Linux) and android targets.
+# ============================================================================
+
+orbs:
+  rust: circleci/rust@1.6.1
+
+executors:
+  alinux-executor:
+    docker:
+      - image: cimg/rust:1.82.0
+    resource_class: medium
+    environment:
+      RUSTFLAGS: "-D warnings"
+      CARGO_TERM_COLOR: always
+
+  android-executor:
+    docker:
+      - image: cimg/rust:1.82.0
+    resource_class: medium
+    environment:
+      ANDROID_HOME: /opt/android-sdk
+      ANDROID_NDK_HOME: /opt/android-ndk
+
+commands:
+  install-tools:
+    steps:
+      - run:
+          name: Install Rust toolchain components
+          command: |
+            rustup component add rustfmt clippy
+  cargo-cached:
+    steps:
+      - restore_cache:
+          keys:
+            - grass-cargo-{{ checksum "Cargo.lock" }}-{{ .Branch }}
+            - grass-cargo-{{ checksum "Cargo.lock" }}
+            - grass-cargo-
+      - run:
+          name: Cargo fetch
+          command: cargo fetch
+      - save_cache:
+          key: grass-cargo-{{ checksum "Cargo.lock" }}-{{ .Branch }}
+          paths:
+            - ~/.cargo/registry
+            - ~/.cargo/git
+            - target
+
+jobs:
+  fmt-and-clippy:
+    executor: alinux-executor
+    steps:
+      - checkout
+      - install-tools
+      - run:
+          name: Format check
+          command: make fmt
+      - run:
+          name: Clippy
+          command: make clippy
+
+  build-alinux:
+    executor: alinux-executor
+    steps:
+      - checkout
+      - install-tools
+      - cargo-cached
+      - run:
+          name: Build workspace (Linux)
+          command: make build platform=alinux BUILD_MODE=release
+      - run:
+          name: Build all examples
+          command: make example-examples BUILD_MODE=release
+      - persist_to_workspace:
+          root: target
+          paths:
+            - release
+
+  test-alinux:
+    executor: alinux-executor
+    steps:
+      - checkout
+      - install-tools
+      - cargo-cached
+      - run:
+          name: Unit + integration tests (Linux)
+          command: make test platform=alinux
+      - run:
+          name: Integration tests detail
+          command: |
+            cargo test --test integration_tests -- --nocapture
+            cargo test --test module_unit_tests
+
+  build-android:
+    executor: android-executor
+    steps:
+      - checkout
+      - install-tools
+      - run:
+          name: Install cargo-ndk + Android targets
+          command: |
+            cargo install cargo-ndk --locked
+            rustup target add aarch64-linux-android armv7-linux-androideabi x86_64-linux-android
+      - cargo-cached
+      - run:
+          name: Build Android targets (arm64-v8a, armeabi-v7a, x86_64)
+          command: make android-build BUILD_MODE=release
+
+  publish-artifacts:
+    executor: alinux-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: target
+      - run:
+          name: Collect artifacts
+          command: |
+            mkdir -p artifacts
+            cp -r target/release/grass-binary artifacts/ 2>/dev/null || true
+            cp -r examples artifacts/ 2>/dev/null || true
+      - store_artifacts:
+          path: artifacts
+          destination: grass-release
+      - store_test_results:
+          path: target/test-results
+
+workflows:
+  version: 2
+  grass-ci:
+    jobs:
+      - fmt-and-clippy
+      - build-alinux:
+          requires:
+            - fmt-and-clippy
+      - test-alinux:
+          requires:
+            - fmt-and-clippy
+      - build-android:
+          requires:
+            - fmt-and-clippy
+          filters:
+            branches:
+              only: /main|release|rc\/.*/
+      - publish-artifacts:
+          requires:
+            - build-alinux
+            - test-alinux
+          filters:
+            branches:
+              only: /main|release/

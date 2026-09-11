@@ -1,0 +1,5 @@
+msrv = "1.75"
+too-many-arguments-threshold = 12
+type-complexity-threshold = 300
+cognitive-complexity-threshold = 50
+too-many-lines-threshold = 150
