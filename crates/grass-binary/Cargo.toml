@@ -1,0 +1,72 @@
+# Copyright (c) 2026 Abhijna Micro (OPC) PVT LTD
+# Author: Abhijna Micro Team <team@abhijnamicro.in>
+
+[package]
+name = "grass-binary"
+version = "0.1.0"
+edition = "2021"
+description = "grass.ai main binary entry point"
+
+[dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+grass-core = { workspace = true }
+grass-runtime = { workspace = true }
+grass-llm = { workspace = true }
+grass-hooks = { workspace = true }
+grass-protocol = { workspace = true }
+grass-ipc = { workspace = true }
+grass-sandbox = { workspace = true }
+grass-plugin = { workspace = true }
+grass-orchestrator = { workspace = true }
+grass-blockchain = { workspace = true }
+grass-integrations = { workspace = true }
+grass-flow = { workspace = true }
+grass-messaging = { workspace = true }
+grass-inference = { workspace = true }
+grass-iot = { workspace = true }
+grass-streaming = { workspace = true }
+grass-vector = { workspace = true }
+
+[dev-dependencies]
+async-trait = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+rand = { workspace = true }
+reqwest = { workspace = true }
+futures = { workspace = true }
+
+[[example]]
+name = "planner_agent"
+path = "../../examples/planner_agent.rs"
+
+[[example]]
+name = "manager_agent"
+path = "../../examples/manager_agent.rs"
+
+[[example]]
+name = "multi_agent_json_comm"
+path = "../../examples/multi_agent_json_comm.rs"
+
+[[example]]
+name = "chromadb_integration"
+path = "../../examples/chromadb_integration.rs"
+
+[[example]]
+name = "agent_pipeline"
+path = "../../examples/agent_pipeline.rs"
+
+[[example]]
+name = "ot_manufacturing_demo"
+path = "../../examples/ot_manufacturing_demo.rs"
+
+[[example]]
+name = "ot_manufacturing_simple"
+path = "../../examples/ot_manufacturing_simple.rs"
+
+[[example]]
+name = "social_comment_scheduler"
+path = "../../examples/social_comment_scheduler.rs"

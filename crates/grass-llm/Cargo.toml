@@ -1,0 +1,21 @@
+# Copyright (c) 2026 Abhijna Micro (OPC) PVT LTD
+# Author: Abhijna Micro Team <team@abhijnamicro.in>
+
+[package]
+name = "grass-llm"
+version = "0.1.0"
+edition = "2021"
+description = "grass.ai LLM service provider abstraction"
+
+[dependencies]
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+bytes = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+futures = { workspace = true }
+reqwest = { workspace = true }
+uuid = { workspace = true }
+grass-core = { workspace = true }

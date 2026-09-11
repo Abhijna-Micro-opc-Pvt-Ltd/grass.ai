@@ -1,0 +1,90 @@
+# Copyright (c) 2026 Abhijna Micro (OPC) PVT LTD
+# Author: Abhijna Micro Team <team@abhijnamicro.in>
+
+[package]
+name = "grassnew"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/grass-core",
+    "crates/grass-runtime",
+    "crates/grass-llm",
+    "crates/grass-hooks",
+    "crates/grass-blockchain",
+    "crates/grass-integrations",
+    "crates/grass-protocol",
+    "crates/grass-ipc",
+    "crates/grass-sandbox",
+    "crates/grass-plugin",
+    "crates/grass-inference",
+    "crates/grass-iot",
+    "crates/grass-streaming",
+    "crates/grass-vector",
+    "crates/grass-orchestrator",
+    "crates/grass-flow",
+    "crates/grass-messaging",
+    "crates/grass-binary",
+]
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+async-trait = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+bytes = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+thiserror = "2"
+anyhow = "1"
+futures = "0.3"
+rand = "0.8"
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls", "stream"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+grass-core = { path = "crates/grass-core" }
+grass-llm = { path = "crates/grass-llm" }
+grass-vector = { path = "crates/grass-vector" }
+grass-blockchain = { path = "crates/grass-blockchain" }
+grass-integrations = { path = "crates/grass-integrations" }
+grass-flow = { path = "crates/grass-flow" }
+grass-messaging = { path = "crates/grass-messaging" }
+grass-inference = { path = "crates/grass-inference" }
+grass-iot = { path = "crates/grass-iot" }
+grass-streaming = { path = "crates/grass-streaming" }
+grass-runtime = { path = "crates/grass-runtime" }
+grass-hooks = { path = "crates/grass-hooks" }
+grass-protocol = { path = "crates/grass-protocol" }
+grass-ipc = { path = "crates/grass-ipc" }
+grass-sandbox = { path = "crates/grass-sandbox" }
+grass-plugin = { path = "crates/grass-plugin" }
+grass-orchestrator = { path = "crates/grass-orchestrator" }
+
+[dependencies]
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rand = { workspace = true }
+reqwest = { workspace = true }
+futures = { workspace = true }
+grass-core = { workspace = true }
+grass-iot = { workspace = true }
+grass-messaging = { workspace = true }
+grass-runtime = { workspace = true }
+grass-hooks = { workspace = true }
+grass-orchestrator = { workspace = true }
+grass-llm = { workspace = true }
+grass-protocol = { workspace = true }
+grass-streaming = { workspace = true }
+grass-inference = { workspace = true }
+grass-flow = { workspace = true }
+grass-integrations = { workspace = true }
+grass-vector = { workspace = true }

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 Abhijna Micro (OPC) PVT LTD
+# Author: Abhijna Micro Team <team@abhijnamicro.in>
+
+[package]
+name = "grass-inference"
+version = "0.1.0"
+edition = "2021"
+description = "grass.ai inference engine (TensorRT, ONNX Runtime)"
+
+[dependencies]
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+grass-core = { workspace = true }

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 Abhijna Micro (OPC) PVT LTD
+# Author: Abhijna Micro Team <team@abhijnamicro.in>
+
+[package]
+name = "grass-runtime"
+version = "0.1.0"
+edition = "2021"
+description = "grass.ai async runtime, task scheduling, and execution engine"
+
+[dependencies]
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+futures = { workspace = true }
+grass-core = { workspace = true }
